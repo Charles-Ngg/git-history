@@ -16,7 +16,7 @@ async function getCommits(path, last, before) {
     ],
     { cwd: pather.dirname(path) }
   );
-  const json = `[${stdout.slice(0, -1)}]`;
+  const json = `[${stdout.replaceAll('\\', '\\\\').replaceAll('\n', '').slice(0, -1)}]`;
 
   const messagesOutput = await execa(
     "git",
