@@ -43,6 +43,9 @@ function activate(context) {
         );
 
         const index = fs.readFileSync(indexPath, "utf-8");
+        const siteUri = panel.webview.asWebviewUri(
+          vscode.Uri.file(path.join(context.extensionPath, "site"))
+        );
         const newIndex = index
           .replace(
             "<body>",
@@ -50,14 +53,7 @@ function activate(context) {
               currentPath
             )}/*-->*/</script>`
           )
-          .replace(
-            "<head>",
-            `<head><base href="${vscode.Uri.file(
-              path.join(context.extensionPath, "site")
-            ).with({
-              scheme: "vscode-resource"
-            })}/"/>`
-          );
+          .replace("<head>", `<head><base href="${siteUri}/"/>`);
 
         panel.webview.html = newIndex;
 
