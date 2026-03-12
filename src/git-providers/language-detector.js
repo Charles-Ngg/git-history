@@ -69,8 +69,16 @@ const dependencies = {
   scala: ["java"]
 };
 
+const languageModuleNames = {
+  vb: "visual-basic"
+};
+
 export function getLanguageDependencies(lang) {
   return dependencies[lang];
+}
+
+export function getLanguageModuleName(lang) {
+  return languageModuleNames[lang] || lang;
 }
 
 export function loadLanguage(lang) {
@@ -79,18 +87,17 @@ export function loadLanguage(lang) {
   }
 
   const deps = getLanguageDependencies(lang);
+  const moduleName = getLanguageModuleName(lang);
 
   let depPromise = import("prismjs");
 
   if (deps) {
     depPromise = depPromise.then(() =>
-      Promise.all(deps.map(dep => 
-        import(`prismjs/components/prism-${dep}`).catch(() => null)
-      ))
+      Promise.all(
+        deps.map(dep => import(`prismjs/components/prism-${getLanguageModuleName(dep)}`))
+      )
     );
   }
 
-  return depPromise.then(() => 
-    import(`prismjs/components/prism-${lang}`).catch(() => null)
-  );
+  return depPromise.then(() => import(`prismjs/components/prism-${moduleName}`));
 }
