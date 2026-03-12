@@ -1,0 +1,35 @@
+name: Build and Publish VSIX
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers when you push a tag like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Install dependencies
+        working-directory: ./vscode-ext
+        run: |
+          npm install -g vsce
+          yarn install
+          
+      - name: Build VSIX
+        working-directory: ./vscode-ext
+        run: vsce package
+        
+      - name: Create Release and Upload VSIX
+        uses: softprops/action-gh-release@v1
+        with:
+          files: vscode-ext/*.vsix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
