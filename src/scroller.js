@@ -162,7 +162,6 @@ export default function Scroller({
     >
       <code
         style={{
-          display: "block",
           width: "calc(100% - 20px)",
           maxWidth: "900px",
           margin: "auto",
