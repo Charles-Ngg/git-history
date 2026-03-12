@@ -1,4 +1,8 @@
-import { getLanguage, getLanguageDependencies } from "./language-detector";
+import {
+  getLanguage,
+  getLanguageDependencies,
+  getLanguageModuleName
+} from "./language-detector";
 
 describe("Can detect language", () => {
   test("javascript", () => {
@@ -287,5 +291,15 @@ describe("Dependencies", () => {
 
   test("cpp", () => {
     expect(getLanguageDependencies("cpp")).toEqual(["c"]);
+  });
+});
+
+describe("Module names", () => {
+  test("vb aliases to visual-basic", () => {
+    expect(getLanguageModuleName("vb")).toBe("visual-basic");
+  });
+
+  test("fallback to same name", () => {
+    expect(getLanguageModuleName("ruby")).toBe("ruby");
   });
 });
