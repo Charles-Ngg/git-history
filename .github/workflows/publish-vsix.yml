@@ -3,7 +3,7 @@ name: Build and Publish VSIX
 on:
   push:
     tags:
-      - 'v*'  # Triggers when you push a tag like v1.0.0
+      - 'v*'
 
 jobs:
   build:
@@ -15,17 +15,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'  # Change from 18 to 20
           
       - name: Install dependencies
         working-directory: ./vscode-ext
         run: |
-          npm install -g vsce
+          npm install -g vsce@latest
           yarn install
           
       - name: Build VSIX
         working-directory: ./vscode-ext
-        run: vsce package
+        run: npx vsce package
         
       - name: Create Release and Upload VSIX
         uses: softprops/action-gh-release@v1
