@@ -15,13 +15,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Change from 18 to 20
+          node-version: '20'
           
-      - name: Install dependencies
+      - name: Install root dependencies
+        run: yarn install
+          
+      - name: Install vscode-ext dependencies
         working-directory: ./vscode-ext
-        run: |
-          npm install -g vsce@latest
-          yarn install
+        run: yarn install
           
       - name: Build VSIX
         working-directory: ./vscode-ext
