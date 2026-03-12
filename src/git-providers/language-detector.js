@@ -84,9 +84,13 @@ export function loadLanguage(lang) {
 
   if (deps) {
     depPromise = depPromise.then(() =>
-      Promise.all(deps.map(dep => import(`prismjs/components/prism-${dep}`)))
+      Promise.all(deps.map(dep => 
+        import(`prismjs/components/prism-${dep}`).catch(() => null)
+      ))
     );
   }
 
-  return depPromise.then(() => import(`prismjs/components/prism-${lang}`));
+  return depPromise.then(() => 
+    import(`prismjs/components/prism-${lang}`).catch(() => null)
+  );
 }
