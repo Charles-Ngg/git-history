@@ -18,14 +18,20 @@ jobs:
           node-version: '20'
           
       - name: Install root dependencies
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
         run: yarn install
           
       - name: Install vscode-ext dependencies
         working-directory: ./vscode-ext
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
         run: yarn install
           
       - name: Build VSIX
         working-directory: ./vscode-ext
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
         run: npx vsce package
         
       - name: Create Release and Upload VSIX
